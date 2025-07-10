@@ -14,8 +14,8 @@ interface PropertyGridProps {
 const PropertyGrid = ({ selectedProperty, onPropertySelect, filters }: PropertyGridProps) => {
   const navigate = useNavigate();
 
-  const handlePropertyClick = (propertyId: string) => {
-    navigate(`/property/${propertyId}`);
+  const handlePropertyClick = () => {
+    navigate('/property/11');
   };
 
   return (
@@ -33,7 +33,7 @@ const PropertyGrid = ({ selectedProperty, onPropertySelect, filters }: PropertyG
           }`}
           onClick={() => {
             onPropertySelect(property.id);
-            handlePropertyClick(property.id);
+            handlePropertyClick();
           }}
         >
           <CardContent className="p-0">
