@@ -18,9 +18,9 @@ const Properties = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8 md:py-8">
         <PropertySearch filters={searchFilters} onFiltersChange={setSearchFilters} />
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8 md:mt-8">
           <PropertyGrid 
             selectedProperty={selectedProperty}
             onPropertySelect={setSelectedProperty}
