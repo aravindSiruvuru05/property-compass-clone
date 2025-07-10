@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Phone, Mail, User } from "lucide-react";
 import { useState } from "react";
 
@@ -17,11 +18,21 @@ const PropertyContact = ({ property }: PropertyContactProps) => {
     phone: "",
     message: ""
   });
+  const [isContactDialogOpen, setIsContactDialogOpen] = useState(false);
+  const [showThankYou, setShowThankYou] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Contact form submitted:", formData);
-    // Handle form submission
+    setIsContactDialogOpen(false);
+    setShowThankYou(true);
+    // Reset form
+    setFormData({
+      name: "",
+      email: "",
+      phone: "",
+      message: ""
+    });
   };
 
   return (
@@ -59,47 +70,74 @@ const PropertyContact = ({ property }: PropertyContactProps) => {
               <Mail className="h-4 w-4 mr-2" />
               Send Email
             </Button>
+            
+            <Dialog open={isContactDialogOpen} onOpenChange={setIsContactDialogOpen}>
+              <DialogTrigger asChild>
+                <Button className="w-full bg-green-600 hover:bg-green-700">
+                  Contact Owner
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-md">
+                <DialogHeader>
+                  <DialogTitle>Contact Property Owner</DialogTitle>
+                </DialogHeader>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <Input
+                    placeholder="Your Name"
+                    value={formData.name}
+                    onChange={(e) => setFormData({...formData, name: e.target.value})}
+                    required
+                  />
+                  <Input
+                    type="email"
+                    placeholder="Email Address"
+                    value={formData.email}
+                    onChange={(e) => setFormData({...formData, email: e.target.value})}
+                    required
+                  />
+                  <Input
+                    type="tel"
+                    placeholder="Phone Number"
+                    value={formData.phone}
+                    onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                  />
+                  <Textarea
+                    placeholder="Message (optional)"
+                    value={formData.message}
+                    onChange={(e) => setFormData({...formData, message: e.target.value})}
+                    rows={4}
+                  />
+                  <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700">
+                    Send Message
+                  </Button>
+                </form>
+              </DialogContent>
+            </Dialog>
           </div>
         </CardContent>
       </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Request Information</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <Input
-              placeholder="Your Name"
-              value={formData.name}
-              onChange={(e) => setFormData({...formData, name: e.target.value})}
-              required
-            />
-            <Input
-              type="email"
-              placeholder="Email Address"
-              value={formData.email}
-              onChange={(e) => setFormData({...formData, email: e.target.value})}
-              required
-            />
-            <Input
-              type="tel"
-              placeholder="Phone Number"
-              value={formData.phone}
-              onChange={(e) => setFormData({...formData, phone: e.target.value})}
-            />
-            <Textarea
-              placeholder="Message (optional)"
-              value={formData.message}
-              onChange={(e) => setFormData({...formData, message: e.target.value})}
-              rows={4}
-            />
-            <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700">
-              Send Message
+      <Dialog open={showThankYou} onOpenChange={setShowThankYou}>
+        <DialogContent className="max-w-md text-center">
+          <DialogHeader>
+            <DialogTitle className="text-center">Thank You!</DialogTitle>
+          </DialogHeader>
+          <div className="py-6">
+            <div className="w-16 h-16 bg-green-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+              <Mail className="h-8 w-8 text-green-600" />
+            </div>
+            <p className="text-gray-600 mb-4">
+              Thank you for contacting us! We'll get back to you within 24 hours.
+            </p>
+            <Button 
+              onClick={() => setShowThankYou(false)}
+              className="bg-blue-600 hover:bg-blue-700"
+            >
+              Close
             </Button>
-          </form>
-        </CardContent>
-      </Card>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       <Card>
         <CardHeader>

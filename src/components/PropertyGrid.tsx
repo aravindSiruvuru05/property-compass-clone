@@ -2,7 +2,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MapPin, Building, Square } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { mockProperties } from "@/data/mockProperties";
 
 interface PropertyGridProps {
@@ -12,6 +12,12 @@ interface PropertyGridProps {
 }
 
 const PropertyGrid = ({ selectedProperty, onPropertySelect, filters }: PropertyGridProps) => {
+  const navigate = useNavigate();
+
+  const handlePropertyClick = (propertyId: string) => {
+    navigate(`/property/${propertyId}`);
+  };
+
   return (
     <div className="h-[600px] overflow-y-auto space-y-4 pr-2">
       <div className="flex justify-between items-center mb-4">
@@ -25,7 +31,10 @@ const PropertyGrid = ({ selectedProperty, onPropertySelect, filters }: PropertyG
           className={`cursor-pointer transition-all duration-200 hover:shadow-lg ${
             selectedProperty === property.id ? 'ring-2 ring-blue-500 shadow-lg' : ''
           }`}
-          onClick={() => onPropertySelect(property.id)}
+          onClick={() => {
+            onPropertySelect(property.id);
+            handlePropertyClick(property.id);
+          }}
         >
           <CardContent className="p-0">
             <div className="flex">
@@ -61,10 +70,6 @@ const PropertyGrid = ({ selectedProperty, onPropertySelect, filters }: PropertyG
                     <span>{property.propertyType}</span>
                   </div>
                 </div>
-                
-                <Link to={`/property/${property.id}`} className="text-xs text-blue-600 hover:underline mt-2 inline-block">
-                  View Details →
-                </Link>
               </div>
             </div>
           </CardContent>
